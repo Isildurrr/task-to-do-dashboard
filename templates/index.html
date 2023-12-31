@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 20px;
+            background: linear-gradient(to right, #6495ED, #FFD700);
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            background: linear-gradient(to right, #8811aa, #ff4444); /* Gradient from purple to red */
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 4px 4px 6px rgba(255, 255, 255, 0.5);
+            font-family: 'Arial', sans-serif;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 15px;
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        li.bg-success {
+            background: linear-gradient(to right, #28a745, #218838);
+            color: #fff;
+        }
+
+        .container {
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="background: linear-gradient(to right, #ffffff, #f0f0f0); padding: 20px; border-radius: 25px; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);">
+    <h1 class="mt-5">Task Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="mt-4">To-Do List</h2>
+            <form action="/add_task" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" name="task" class="form-control" placeholder="Add a new task" required>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </div>
+                </div>
+            </form>
+            <ul>
+                {% for task_id in range(tasks|length) %}
+                    {% set task = tasks[task_id] %}
+                    <li>{{ task }}
+                        <a href="/complete_task/{{ task_id }}" class="btn btn-success btn-sm float-right">Mark as
+                            Completed</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="mt-4">Completed Tasks</h2>
+            <ul>
+                {% for task_id in range(completed_tasks|length) %}
+                    {% set task = completed_tasks[task_id] %}
+                    <li class="bg-success text-white">{{ task }}
+                        <a href="/delete_completed_task/{{ task_id }}" class="btn btn-danger btn-sm float-right">Delete</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Refresh Button -->
+    <div class="row mt-3">
+        <div class="col-md-12 text-center">
+            <a href="/refresh" class="btn btn-warning">Refresh</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
